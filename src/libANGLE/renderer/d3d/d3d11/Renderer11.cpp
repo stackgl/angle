@@ -475,6 +475,24 @@ Renderer11::Renderer11(egl::Display *display)
                 UNREACHABLE();
         }
 
+        const char *FORCE_USE_WARP_ENV_KEY    = "FORCE_USE_WARP";
+        const char *THROW_IF_NOT_WARP_ENV_KEY = "THROW_IF_NOT_WARP";
+
+        char *FORCE_USE_WARP    = std::getenv(FORCE_USE_WARP_ENV_KEY);
+        char *THROW_IF_NOT_WARP = std::getenv(THROW_IF_NOT_WARP_ENV_KEY);
+
+        if (FORCE_USE_WARP != nullptr && std::string(FORCE_USE_WARP) == "1" &&
+            mRequestedDriverType != D3D_DRIVER_TYPE_WARP)
+        {
+            mRequestedDriverType = D3D_DRIVER_TYPE_WARP;
+        }
+
+        if (THROW_IF_NOT_WARP != nullptr && std::string(THROW_IF_NOT_WARP) == "1" &&
+            mRequestedDriverType != D3D_DRIVER_TYPE_WARP)
+        {
+            UNREACHABLE();
+        }
+
         const EGLenum presentPath = attributes.get(EGL_EXPERIMENTAL_PRESENT_PATH_ANGLE,
                                                    EGL_EXPERIMENTAL_PRESENT_PATH_COPY_ANGLE);
         mPresentPathFastEnabled = (presentPath == EGL_EXPERIMENTAL_PRESENT_PATH_FAST_ANGLE);
