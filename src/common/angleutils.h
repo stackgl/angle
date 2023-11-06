@@ -18,6 +18,7 @@
 #include <set>
 #include <sstream>
 #include <vector>
+#include <cstdint>
 
 // A helper class to disallow copy and assignment operators
 namespace angle
